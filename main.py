@@ -1,6 +1,8 @@
 import csv
+import time
 import requests
 
+from playwright.sync_api import sync_playwright
 from rich.console import Console
 from rich.prompt import Prompt
 
@@ -10,26 +12,69 @@ from rich.prompt import Prompt
 
 
 def menu():
-    choices = ["Irving, TX - 0", "Carrollton, TX - 1", "Arlington, TX - 2", "Coppell, TX - 3"]
-    for choice in choices:
-        console.print(f"{choice[:len(choice)-3]} [blue]{choice[len(choice)-3:]}[/blue]", end=" | ")
-    selection = Prompt.ask("\nPlease select city [[blue]0[/blue] for Irving, TX] ")
-    choice = choices[int(selection)]
-    formatted_choice = choice[:len(choice)-3]
-    console.print("You have selected [bold underline blue]" + formatted_choice + "[/bold underline blue]")
+    ...
+    # choices = ["Irving, TX - 0", "Carrollton, TX - 1", "Arlington, TX - 2", "Coppell, TX - 3"]
+    # for choice in choices:
+    #     console.print(f"{choice[:len(choice)-3]} [blue]{choice[len(choice)-3:]}[/blue]", end=" | ")
+    # selection = Prompt.ask("\nPlease select city [[blue]0[/blue] for Irving, TX] ")
+    # choice = choices[int(selection)]
+    # formatted_choice = choice[:len(choice)-3]
+    # console.print("You have selected [bold underline blue]" + formatted_choice + "[/bold underline blue]")
 
-# Manual steps to navigate xome.com and download list of homes for sale
-# 1 open https://www.xome.com/Listing/ListingSearch.aspx
-# 2 type name of city into search box
-# 3 change view to list
-# 3 find download button and copy link address
-# 4 assign link address to download_url
-# 5
+    # Manual steps to navigate xome.com and download list of homes for sale
+    # 1 open https://www.xome.com/Listing/ListingSearch.aspx
+    # 2 type name of city into search box
+    # 3 change view to list
+    # 3 find download button and copy link address
+    # 4 assign link address to download_url
+    # 5 download content
+    # 6 rename file to city + date of download
 
 
-def main():
-    download_url = ("https://www.xome.com/Listing/ExportListingInCSV.ashx"
-                    "?searchoverride=0fb00fea-c8db-496a-a781-cb870f083298")
+def search_city():
+    with sync_playwright() as playwright:
+        # open chrome and navigate to target pate
+        browser = playwright.chromium.launch(headless=False)
+        page = browser.new_page()
+        page.goto("https://www.xome.com/Listing/ListingSearch.aspx")
+        # find search input field and input name of city
+        page.locator("#criteria-location-input").fill("Irving, TX")
+        time.sleep(5)
+        # simulate keyboard actions
+        page.keyboard.press("Enter")
+        page.keyboard.press("ArrowDown")
+        page.keyboard.press("Enter")
+        # page.keyboard.press("ArrowDown")
+
+        # change from map to list view
+        page.get_by_title("List view").click()
+        time.sleep(5)
+
+        # find download all button called Download All Data
+        link = page.get_by_text("Download All Data").get_attribute("href")
+        time.sleep(5)
+
+        # pass link to
+        download_file(link)
+
+        # page.get_by_role("button")
+        # page.locator(text="").press_sequentially()
+        # page.get_by_role("button", {id: "criteria-submit-search"}).click()
+        # page.locator("criteria-submit-search").press("Enter")
+        # page.get_by_label("Search").fill("Irving, TX")
+        # page.keyboard.press("Enter")
+        time.sleep(100)
+
+
+# TODO:
+# 7 parse renamed file
+# 8 find mean, mode, min, max,
+# 9 use streamlit vizzu to present data
+
+
+def download_file(link):
+    home = "https://www.xome.com"
+    download_url = home.join(link)
 
     # make API call, added user-agent to prevent 403 error
     req = requests.get(download_url, headers={"User-Agent": "Mozilla/5.0"})
@@ -51,42 +96,6 @@ def main():
 
     # rename file name to city plus date
 
-    # with open("cb870f083298", "r" ) as file:
-
-
-    # download csv files for each city
-    # driver = webdriver.Chrome()
-    #
-    # driver.get("https://www.xome.com/")
-
-    # url = "https://www.xome.com/Listing/ListingSearch.aspx"
-    # response = requests.get(url)
-    # soup = BeautifulSoup(response.content, "html.parser")
-    # # input_city = soup.find_all("div", class_="search-input-wrapper")
-    # print(soup)
-
-    # list_of_urls = []
-    # read csv file and grab all the urls
-    # with open("src/Xome_2023-11-21-15-22 Irving.csv") as file:
-    #     reader = csv.reader(file)
-    #     data = list(reader)
-    #     # print(data[0])
-    #
-    #     url_index = data[0].index('URL')
-    #     # print(url_index)
-    #
-    #     for row in data:
-    #         list_of_urls.append((row[url_index]))
-    #
-    #     print(list_of_urls)
-    #     print(len(list_of_urls))
-    #
-    # webbrowser.open(list_of_urls[1])
-
-    # listingdetail - financialconsiderations
-    # go to each url and scrape the Property ID number
-
-    # go to property records and grab appraisal value and name of owners
 
 
 if __name__ == "__main__":
@@ -95,5 +104,5 @@ if __name__ == "__main__":
     # selection = input("Please type in number of the city you are interested in")
     # choice = choices[int(selection)]
     console = Console()
-    menu()
+    search_city()
 
