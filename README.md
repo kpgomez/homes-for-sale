@@ -8,8 +8,9 @@
 - [Playwright documentation](https://playwright.dev/python/)
 - [Use Playwright to type text into search field](https://ray.run/questions/how-do-i-simulate-typing-text-into-an-input-field-using-playwright)
 - [Use Playwright to press enter](https://ray.run/questions/how-do-i-simulate-pressing-the-enter-key-in-playwright)
+- [Use Playwright to retrieve href attribute](https://stackoverflow.com/questions/76624911/get-href-link-using-python-playwright)
 - [Class 17 Demo ](https://github.com/codefellows/seattle-code-python-401n8/blob/main/class-17/README.md)
-- 
+
 ### Setup
 #### Create and Activate Virtual Enviroment
 
@@ -27,4 +28,4 @@
 `python main.py`
 
 #### Tests
-n/a
+manual testing 
