@@ -15,7 +15,6 @@ for sale in the city selected by the user. Other useful home data in the file in
 - Direct link to listing
 - and many more
 
-
 ### Links and Resources
 - [Automate the Boring Stuff by Al Sweigart (2e)](https://automatetheboringstuff.com/)
 - [How to create a Python program to download file from the web | Python Tutorial by Jie Jenn](https://www.youtube.com/watch?v=HDEvWfSk2So)
