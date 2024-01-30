@@ -60,13 +60,13 @@ def search_city(city):
 def download_file(link, city):
     home = "https://www.xome.com"
     download_url = f"{home}{link}"
-    print(download_url)
 
     # make API call, added user-agent to prevent 403 error
     req = requests.get(download_url, headers={"User-Agent": "Mozilla/5.0"})
 
     # context manager to write file to csv
     with open(f"{city}-{datetime.date.today()}.csv", "wb") as file:
+        print(file.name)
         chunks = req.iter_content(chunk_size=8192)
         for chunk in chunks:
             if chunk:
@@ -76,16 +76,15 @@ def download_file(link, city):
 
 # TODO
 def parse_file():
-    ...
+    pass
+
 
 # TODO:
-# 6 rename file to city + date of download
+# 6 rename file to city + date of download ✔️
 # 7 parse renamed file
 # 8 find mean, mode, min, max
 # 9 use streamlit-vizzu module to present data <-- this might take awhile to learn
 
-
 if __name__ == "__main__":
     console = Console()
     menu()
-
