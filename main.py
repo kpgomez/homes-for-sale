@@ -1,5 +1,6 @@
-import time
+import datetime
 import requests
+import time
 
 from playwright.sync_api import sync_playwright
 from rich.console import Console
@@ -23,7 +24,6 @@ def menu():
     selection = Prompt.ask("\nPlease select city [[blue]0[/blue] for Irving, TX] ")
     choice = choices[int(selection)]
     formatted_city = choice[:len(choice)-3]
-    # print(formatted_city)
     console.print("You have selected [bold underline blue]" + formatted_city + "[/bold underline blue]")
     search_city(formatted_city)
 
@@ -54,46 +54,37 @@ def search_city(city):
         time.sleep(5)
 
         # pass link to download_file function
-        download_file(link)
+        download_file(link, city)
 
 
-def download_file(link):
+def download_file(link, city):
     home = "https://www.xome.com"
     download_url = f"{home}{link}"
 
     # make API call, added user-agent to prevent 403 error
     req = requests.get(download_url, headers={"User-Agent": "Mozilla/5.0"})
-    # print('req.headers', req.headers)
-    # print(req.url)
-
-    # .rfind finds the first occurrence of "/" character starting from right to left
-    # .find starts from left to right
-    # find the filename
-    filename = req.url[download_url.rfind("-") + 1:]
-    print('filename', filename)
 
     # context manager to write file to csv
-    with open(f"{filename}.csv", "wb") as file:
+    with open(f"{city}-{datetime.date.today()}.csv", "wb") as file:
+        print(file.name)
         chunks = req.iter_content(chunk_size=8192)
         for chunk in chunks:
             if chunk:
                 file.write(chunk)
 
-    # rename file name to city plus date
 
 
 # TODO
 def parse_file():
-    ...
+    pass
+
 
 # TODO:
-# 6 rename file to city + date of download
+# 6 rename file to city + date of download ✔️
 # 7 parse renamed file
 # 8 find mean, mode, min, max
 # 9 use streamlit-vizzu module to present data <-- this might take awhile to learn
 
-
 if __name__ == "__main__":
     console = Console()
     menu()
-

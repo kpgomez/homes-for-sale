@@ -39,7 +39,8 @@ for sale in the city selected by the user. Other useful home data in the file in
 #### How to initialize/run your application (where applicable)
 *Run command* 
 
-`python main.py`
+`$ python main.py && streamlit run charts.py`
+
 
 #### Tests
 manual testing 
