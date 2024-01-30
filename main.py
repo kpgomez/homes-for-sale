@@ -66,7 +66,7 @@ def download_file(link, city):
 
     # context manager to write file to csv
     with open(f"{city}-{datetime.date.today()}.csv", "wb") as file:
-        print(file.name)
+        # print(file.name)
         chunks = req.iter_content(chunk_size=8192)
         for chunk in chunks:
             if chunk:
